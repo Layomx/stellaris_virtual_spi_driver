@@ -1,0 +1,38 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install toolchain and test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes \
+            arm-none-eabi-gcc \
+            cmake \
+            ninja-build \
+            qemu-system-arm \
+            clangd
+
+      - name: Build firmware
+        run: make
+
+      - name: Run QEMU tests
+        run: make test
+
+      - name: Run clangd checks
+        run: |
+          for file in src/*.c; do
+            clangd --check="$file" --compile-commands-dir=.
+          done

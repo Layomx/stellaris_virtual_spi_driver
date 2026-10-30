@@ -1,0 +1,16 @@
+/build/
+/compile_commands.json
+.cache/
+.clangd/
+.vscode/
+.idea/
+*.o
+*.a
+*.elf
+*.bin
+*.hex
+*.map
+*.img
+*.log
+*.swp
+*~
